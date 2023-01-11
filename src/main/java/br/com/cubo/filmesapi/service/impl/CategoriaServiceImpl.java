@@ -1,5 +1,6 @@
 package br.com.cubo.filmesapi.service.impl;
 
+import br.com.cubo.filmesapi.domain.builder.CategoriaDtoBuilder;
 import br.com.cubo.filmesapi.domain.dto.CategoriaDto;
 import br.com.cubo.filmesapi.domain.model.Categoria;
 import br.com.cubo.filmesapi.repository.CategoriaRepository;
@@ -32,7 +33,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public Page<CategoriaDto> getAll(Pageable pageable) {
         return categoriaRepository.findAll(pageable).map(categoria -> {
-            return CategoriaDto.builder()
+            return CategoriaDtoBuilder.builder()
                     .descricao(categoria.getDescricao())
                     .build();
         });
@@ -41,7 +42,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public Optional<CategoriaDto> getById(UUID id) {
         return categoriaRepository.findById(id).map(categoria -> {
-            return CategoriaDto.builder()
+            return CategoriaDtoBuilder.builder()
                     .descricao(categoria.getDescricao())
                     .build();
         });

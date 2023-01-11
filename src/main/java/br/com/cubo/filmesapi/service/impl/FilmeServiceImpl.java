@@ -1,5 +1,6 @@
 package br.com.cubo.filmesapi.service.impl;
 
+import br.com.cubo.filmesapi.domain.builder.CategoriaDtoBuilder;
 import br.com.cubo.filmesapi.domain.dto.CategoriaDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeSaveDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeShowDto;
@@ -36,7 +37,7 @@ public class FilmeServiceImpl implements FilmeService {
                 .ano(newFilme.getAno())
                 .duracao(newFilme.getDuracao())
                 .categorias(newFilme.getCategorias().stream().map(categoria -> {
-                    return CategoriaDto.builder()
+                    return CategoriaDtoBuilder.builder()
                             .descricao(categoria.getDescricao())
                             .build();
                 }).collect(Collectors.toList()))

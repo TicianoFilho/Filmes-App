@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,9 +29,9 @@ public class CategoriaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoriaDto saveCategoria(@RequestBody CategoriaDto dto) {
+    public ResponseEntity<CategoriaDto> saveCategoria(@RequestBody CategoriaDto dto) {
         System.out.println("okkk");
-        return categoriaService.save(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(dto));
     }
 
 }

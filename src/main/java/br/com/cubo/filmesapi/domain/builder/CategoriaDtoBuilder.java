@@ -1,7 +1,6 @@
 package br.com.cubo.filmesapi.domain.builder;
 
 import br.com.cubo.filmesapi.domain.dto.CategoriaDto;
-import br.com.cubo.filmesapi.domain.model.Categoria;
 
 public class CategoriaDtoBuilder {
 

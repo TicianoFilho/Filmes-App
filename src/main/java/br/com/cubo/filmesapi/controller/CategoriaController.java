@@ -7,8 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/categorias")
@@ -27,11 +28,18 @@ public class CategoriaController {
         return categoriaService.getAll(pageable);
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CategoriaDto getCategoriaById(@PathVariable(name = "id") Long id) {
+        return categoriaService.getById(id).get();
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<CategoriaDto> saveCategoria(@RequestBody CategoriaDto dto) {
-        System.out.println("okkk");
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(dto));
+    public CategoriaDto saveCategoria(@RequestBody CategoriaDto dto) {
+        return categoriaService.save(dto);
     }
+
+
 
 }

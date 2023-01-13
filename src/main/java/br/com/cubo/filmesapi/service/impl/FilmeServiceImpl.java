@@ -27,8 +27,7 @@ public class FilmeServiceImpl implements FilmeService {
     private final FilmeRepository filmeRepository;
     private final CategoriaRepository categoriaRepository;
 
-    public FilmeServiceImpl(FilmeRepository filmeRepository,
-                            CategoriaRepository categoriaRepository) {
+    public FilmeServiceImpl(FilmeRepository filmeRepository, CategoriaRepository categoriaRepository) {
         this.filmeRepository = filmeRepository;
         this.categoriaRepository = categoriaRepository;
     }
@@ -81,14 +80,16 @@ public class FilmeServiceImpl implements FilmeService {
         Filme filme = filmeRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Nenhum filme foi encontrado."));
 
-//        return Optional.of(FilmeShowDto.builder()
-//                .descricao(filme.getDescricao())
-//                .ano(filme.getAno())
-//                .duracao(filme.getDuracao())
-//                .categorias(filme.getCategorias().stream().map(
-//                        categoria -> categoria.getId()).collect(Collectors.toList()))
-//                .build());
-        return null;
+        return Optional.of(FilmeShowDto.builder()
+                .descricao(filme.getDescricao())
+                .ano(filme.getAno())
+                .duracao(filme.getDuracao())
+                .categorias(filme.getCategorias().stream().map(categoria -> {
+                    return CategoriaDtoBuilder.builder()
+                            .descricao(categoria.getDescricao())
+                            .build();
+                }).collect(Collectors.toList()))
+                .build());
     }
 
     @Override

@@ -23,7 +23,8 @@ public class FilmeController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<FilmeShowDto> getAllFilmes(@PageableDefault(page = 0, size = 5, sort = "id") Pageable pageable) {
+    public Page<FilmeShowDto> getAllFilmes(@PageableDefault(
+            page = 0, size = 5, sort = "id") Pageable pageable) {
         return filmeService.getAll(pageable);
     }
 
@@ -31,5 +32,11 @@ public class FilmeController {
     @ResponseStatus(HttpStatus.CREATED)
     public FilmeShowDto saveFilme(@RequestBody FilmeSaveDto dto) {
         return filmeService.save(dto);
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public FilmeShowDto getFilmeById(@PathVariable(name = "id") Long id) {
+        return filmeService.getById(id).get();
     }
 }

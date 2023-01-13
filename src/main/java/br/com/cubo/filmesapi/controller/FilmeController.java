@@ -2,6 +2,7 @@ package br.com.cubo.filmesapi.controller;
 
 import br.com.cubo.filmesapi.domain.dto.FilmeSaveDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeShowDto;
+import br.com.cubo.filmesapi.domain.dto.FilmeUpdateDto;
 import br.com.cubo.filmesapi.service.FilmeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,13 @@ public class FilmeController {
     @ResponseStatus(HttpStatus.CREATED)
     public FilmeShowDto saveFilme(@RequestBody FilmeSaveDto dto) {
         return filmeService.save(dto);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public FilmeUpdateDto updateFilmeById(@PathVariable(name = "id") Long id,
+                                          @RequestBody FilmeUpdateDto updateDto) {
+        return filmeService.update(id, updateDto);
     }
 
     @GetMapping("/{id}")

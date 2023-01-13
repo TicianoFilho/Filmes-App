@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 @Service
@@ -22,6 +23,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
+    @Transactional
     public CategoriaDto save(CategoriaDto dto) {
 
         Categoria categoria = new Categoria();
@@ -30,6 +32,17 @@ public class CategoriaServiceImpl implements CategoriaService {
         Categoria newCategoria = categoriaRepository.save(categoria);
 
         BeanUtils.copyProperties(newCategoria, dto);
+        return dto;
+    }
+
+    @Override
+    @Transactional
+    public CategoriaDto update(Long id, CategoriaDto dto) {
+        Categoria categoria = categoriaRepository.findById(id).get();
+        categoria.setDescricao(dto.getDescricao());
+        Categoria updatedCategoria = categoriaRepository.save(categoria);
+
+        BeanUtils.copyProperties(updatedCategoria, dto);
         return dto;
     }
 
@@ -52,17 +65,9 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         categoriaRepository.deleteById(id);
     }
 
-    @Override
-    public CategoriaDto update(Long id, CategoriaDto dto) {
-        Categoria categoria = categoriaRepository.findById(id).get();
-        categoria.setDescricao(dto.getDescricao());
-        Categoria updatedCategoria = categoriaRepository.save(categoria);
-
-        BeanUtils.copyProperties(updatedCategoria, dto);
-        return dto;
-    }
 }

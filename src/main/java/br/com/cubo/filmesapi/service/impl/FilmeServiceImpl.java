@@ -4,6 +4,7 @@ import br.com.cubo.filmesapi.domain.builder.CategoriaDtoBuilder;
 import br.com.cubo.filmesapi.domain.dto.CategoriaDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeSaveDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeShowDto;
+import br.com.cubo.filmesapi.domain.dto.FilmeUpdateDto;
 import br.com.cubo.filmesapi.domain.model.Categoria;
 import br.com.cubo.filmesapi.domain.model.Filme;
 import br.com.cubo.filmesapi.repository.CategoriaRepository;
@@ -56,6 +57,22 @@ public class FilmeServiceImpl implements FilmeService {
                             .build();
                 }).collect(Collectors.toList()))
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public FilmeUpdateDto update(Long id, FilmeUpdateDto dto) {
+        Filme filme = filmeRepository.findById(id).get();
+        Filme updatedFilme = filmeRepository.save(
+                filme.builder()
+                        .id(filme.getId())
+                        .descricao(dto.getDescricao())
+                        .ano(dto.getAno())
+                        .duracao(dto.getDuracao())
+                        .build()
+        );
+        BeanUtils.copyProperties(updatedFilme, dto);
+        return dto;
     }
 
     @Override

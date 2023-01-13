@@ -1,5 +1,6 @@
 package br.com.cubo.filmesapi.service.impl;
 
+import br.com.cubo.filmesapi.domain.builder.CategoriaDtoBuilder;
 import br.com.cubo.filmesapi.domain.dto.CategoriaDto;
 import br.com.cubo.filmesapi.domain.model.Categoria;
 import br.com.cubo.filmesapi.repository.CategoriaRepository;
@@ -56,7 +57,12 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public CategoriaDto update(Long id) {
-        return null;
+    public CategoriaDto update(Long id, CategoriaDto dto) {
+        Categoria categoria = categoriaRepository.findById(id).get();
+        categoria.setDescricao(dto.getDescricao());
+        Categoria updatedCategoria = categoriaRepository.save(categoria);
+
+        BeanUtils.copyProperties(updatedCategoria, dto);
+        return dto;
     }
 }

@@ -40,6 +40,13 @@ public class CategoriaController {
         return categoriaService.save(dto);
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CategoriaDto updateCategoria(@PathVariable(name = "id") Long id,
+                                        @RequestBody CategoriaDto dto) {
+        return categoriaService.update(id, dto);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCategoria(@PathVariable(name = "id") Long id) {

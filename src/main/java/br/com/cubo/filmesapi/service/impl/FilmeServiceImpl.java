@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,7 @@ public class FilmeServiceImpl implements FilmeService {
     }
 
     @Override
+    @Transactional
     public FilmeShowDto save(FilmeSaveDto dto) {
         Filme filme = new Filme();
         BeanUtils.copyProperties(dto, filme);
@@ -93,7 +95,8 @@ public class FilmeServiceImpl implements FilmeService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-       // filmeRepository.delete(filme);
+        filmeRepository.deleteById(id);
     }
 }

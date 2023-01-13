@@ -1,10 +1,7 @@
 package br.com.cubo.filmesapi.service.impl;
 
 import br.com.cubo.filmesapi.domain.builder.CategoriaDtoBuilder;
-import br.com.cubo.filmesapi.domain.dto.CategoriaDto;
-import br.com.cubo.filmesapi.domain.dto.FilmeSaveDto;
-import br.com.cubo.filmesapi.domain.dto.FilmeShowDto;
-import br.com.cubo.filmesapi.domain.dto.FilmeUpdateDto;
+import br.com.cubo.filmesapi.domain.dto.*;
 import br.com.cubo.filmesapi.domain.model.Categoria;
 import br.com.cubo.filmesapi.domain.model.Filme;
 import br.com.cubo.filmesapi.exception.ResourceNotFoundException;
@@ -111,7 +108,7 @@ public class FilmeServiceImpl implements FilmeService {
                     return CategoriaDtoBuilder.builder()
                             .descricao(categoria.getDescricao())
                             .build();
-                }).collect(Collectors.toList()))
+                    }).collect(Collectors.toList()))
                 .build());
     }
 
@@ -119,5 +116,38 @@ public class FilmeServiceImpl implements FilmeService {
     @Transactional
     public void delete(Long id) {
         filmeRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public FilmeShowDto addCategoria(Long filmeId, FilmeAddCategoriaDto dto) {
+        Filme filme = filmeRepository.findById(filmeId).orElseThrow(
+                () -> new ResourceNotFoundException((String.format("O filme de id = %s não existe.", filmeId)))
+        );
+
+        dto.getCategoriaIds().forEach(id -> {
+            Categoria categoria = categoriaRepository.findById(id).orElseThrow(
+                    () -> new ResourceNotFoundException(String.format("A categoria de id = %s não existe.", id))
+            );
+            filme.getCategorias().add(categoria);
+        });
+
+        Filme updatedFilme = filmeRepository.save(filme);
+
+        return FilmeShowDto.builder()
+                .descricao(filme.getDescricao())
+                .ano(filme.getAno())
+                .duracao(filme.getDuracao())
+                .categorias(filme.getCategorias().stream().map(categoria -> {
+                    return CategoriaDtoBuilder.builder()
+                            .descricao(categoria.getDescricao())
+                            .build();
+                    }).collect(Collectors.toList()))
+                .build();
+    }
+
+    @Override
+    public FilmeShowDto removeCategoriaFilme(Long id, Long categoriaId) {
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package br.com.cubo.filmesapi.controller;
 
+import br.com.cubo.filmesapi.domain.dto.FilmeAddCategoriaDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeSaveDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeShowDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeUpdateDto;
@@ -51,6 +52,22 @@ public class FilmeController {
     public FilmeUpdateDto updateFilmeById(@PathVariable(name = "id") Long id,
                                           @RequestBody FilmeUpdateDto updateDto) {
         return filmeService.update(id, updateDto);
+    }
+
+    @PutMapping("{id}/categorias")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(tags = "Filme", summary = "Adiciona uma ou mais cagetorias para o filme")
+    public FilmeShowDto addCategorias(@PathVariable(name = "id") Long id,
+                                      @RequestBody FilmeAddCategoriaDto dto) {
+        return filmeService.addCategoria(id, dto);
+    }
+
+    @PutMapping("{id}/categorias/{categoriaId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(tags = "Filme", summary = "Remove uma categoria para o filme")
+    public FilmeShowDto removeCategoriaFilme(@PathVariable(name = "id") Long id,
+                                        @PathVariable(name = "categoriaId") Long categoriaId) {
+        return filmeService.removeCategoriaFilme(id, categoriaId);
     }
 
     @DeleteMapping("/{id}")

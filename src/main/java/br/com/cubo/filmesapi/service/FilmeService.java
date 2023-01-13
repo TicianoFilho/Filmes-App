@@ -1,5 +1,6 @@
 package br.com.cubo.filmesapi.service;
 
+import br.com.cubo.filmesapi.domain.dto.FilmeAddCategoriaDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeSaveDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeShowDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeUpdateDto;
@@ -19,4 +20,8 @@ public interface FilmeService {
     Optional<FilmeShowDto> getById(Long id);
 
     void delete(Long id);
+
+    FilmeShowDto addCategoria(Long filmeId, FilmeAddCategoriaDto dto);
+
+    FilmeShowDto removeCategoriaFilme(Long id, Long categoriaId);
 }

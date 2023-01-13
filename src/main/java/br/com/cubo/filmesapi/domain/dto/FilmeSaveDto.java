@@ -21,5 +21,5 @@ public class FilmeSaveDto {
 
     private String duracao;
 
-    private List<UUID> categoriaIds;
+    private List<Long> categoriaIds;
 }

@@ -12,4 +12,6 @@ public interface CategoriaService {
     Page<CategoriaDto> getAll(Pageable pageable);
     Optional<CategoriaDto> getById(Long id);
     void delete(Long id);
+
+    CategoriaDto update(Long id);
 }

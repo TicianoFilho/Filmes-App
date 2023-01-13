@@ -11,6 +11,6 @@ import java.util.UUID;
 public interface FilmeService {
     FilmeShowDto save(FilmeSaveDto dto);
     Page<FilmeShowDto> getAll(Pageable pageable);
-    Optional<FilmeShowDto> getById(UUID id);
-    void delete(UUID id);
+    Optional<FilmeShowDto> getById(Long id);
+    void delete(Long id);
 }

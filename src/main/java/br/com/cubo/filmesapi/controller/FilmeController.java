@@ -23,8 +23,8 @@ public class FilmeController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<FilmeSaveDto> getAllFilmes(@PageableDefault(page = 0, size = 5, sort = "id") Pageable pageable) {
-        return null;
+    public Page<FilmeShowDto> getAllFilmes(@PageableDefault(page = 0, size = 5, sort = "id") Pageable pageable) {
+        return filmeService.getAll(pageable);
     }
 
     @PostMapping

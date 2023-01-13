@@ -7,6 +7,7 @@ import br.com.cubo.filmesapi.domain.dto.FilmeShowDto;
 import br.com.cubo.filmesapi.domain.dto.FilmeUpdateDto;
 import br.com.cubo.filmesapi.domain.model.Categoria;
 import br.com.cubo.filmesapi.domain.model.Filme;
+import br.com.cubo.filmesapi.exception.ResourceNotFoundException;
 import br.com.cubo.filmesapi.repository.CategoriaRepository;
 import br.com.cubo.filmesapi.repository.FilmeRepository;
 import br.com.cubo.filmesapi.service.CategoriaService;
@@ -15,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -41,7 +43,9 @@ public class FilmeServiceImpl implements FilmeService {
         BeanUtils.copyProperties(dto, filme);
 
         dto.getCategoriaIds().forEach(id -> {
-            Categoria categoria = categoriaRepository.findById(id).get();
+            Categoria categoria = categoriaRepository.findById(id).orElseThrow(
+                    () -> new ResourceNotFoundException(String.format("Categoria com id = %s não encontrado.", id))
+            );
             filme.getCategorias().add(categoria);
         });
 

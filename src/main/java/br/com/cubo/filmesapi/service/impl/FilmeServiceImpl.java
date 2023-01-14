@@ -4,22 +4,19 @@ import br.com.cubo.filmesapi.domain.builder.CategoriaDtoBuilder;
 import br.com.cubo.filmesapi.domain.dto.*;
 import br.com.cubo.filmesapi.domain.model.Categoria;
 import br.com.cubo.filmesapi.domain.model.Filme;
+import br.com.cubo.filmesapi.exception.MovieExistsException;
 import br.com.cubo.filmesapi.exception.ResourceNotFoundException;
 import br.com.cubo.filmesapi.repository.CategoriaRepository;
 import br.com.cubo.filmesapi.repository.FilmeRepository;
-import br.com.cubo.filmesapi.service.CategoriaService;
 import br.com.cubo.filmesapi.service.FilmeService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +35,10 @@ public class FilmeServiceImpl implements FilmeService {
     public FilmeShowDto save(FilmeSaveDto dto) {
         Filme filme = new Filme();
         BeanUtils.copyProperties(dto, filme);
+
+        if (FilmeExiste(filme)) {
+            throw new MovieExistsException(String.format("O filme \"%s\" já existe.", filme.getDescricao()));
+        }
 
         dto.getCategoriaIds().forEach(id -> {
             Categoria categoria = categoriaRepository.findById(id).orElseThrow(
@@ -63,7 +64,14 @@ public class FilmeServiceImpl implements FilmeService {
     @Override
     @Transactional
     public FilmeUpdateDto update(Long id, FilmeUpdateDto dto) {
-        Filme filme = filmeRepository.findById(id).get();
+        Filme filme = filmeRepository.findById(id).orElseThrow(() ->
+            new ResourceNotFoundException(String.format("Filme com id = %s não encontrado.", id))
+        );
+
+        if (FilmeExiste(filme)) {
+            throw new MovieExistsException(String.format("O filme \"%s\" já existe.", filme.getDescricao()));
+        }
+
         Filme updatedFilme = filmeRepository.save(
                 filme.builder()
                         .id(filme.getId())
@@ -149,5 +157,9 @@ public class FilmeServiceImpl implements FilmeService {
     @Override
     public FilmeShowDto removeCategoriaFilme(Long id, Long categoriaId) {
         return null;
+    }
+
+    private boolean FilmeExiste(Filme filme) {
+        return filmeRepository.existsByDescricao(filme.getDescricao());
     }
 }

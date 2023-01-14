@@ -24,4 +24,5 @@ public interface FilmeService {
     FilmeShowDto addCategoria(Long filmeId, FilmeAddCategoriaDto dto);
 
     FilmeShowDto removeCategoriaFilme(Long id, Long categoriaId);
+
 }

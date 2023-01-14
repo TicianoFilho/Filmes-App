@@ -21,6 +21,15 @@ public class GlobalExceptionHandler {
 		return errorDetails;
 	}
 
+    @ExceptionHandler(MovieExistsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDetailsDto handleMovieExistsException(MovieExistsException exception,
+                                                           WebRequest webRequest) {
+        ErrorDetailsDto errorDetails = new ErrorDetailsDto(LocalDateTime.now(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return errorDetails;
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDetailsDto handleGlobalException(Exception exception, WebRequest webRequest) {
